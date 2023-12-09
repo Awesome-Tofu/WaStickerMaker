@@ -82,6 +82,8 @@ app.get('/img',async (req,res) => {
   try{
     //'https://te.legra.ph/file/30d0cec47423d5370ea0c.png';
     const imageUrl = req.query.url;
+    const author = req.query.author;
+    const pack = req.query.pack;
 
     // Create the "images" folder if it doesn't exist
     try {
@@ -94,7 +96,7 @@ app.get('/img',async (req,res) => {
     }
 
     // Example usage:
-    const fileName = await createStickerAndSave(imageUrl, 'Tofu', 'Miko');
+    const fileName = await createStickerAndSave(imageUrl, pack, author);
     const formattedFileName = path.basename(fileName);
     res.json({file:'/'+formattedFileName})
   }catch(error){
@@ -107,6 +109,9 @@ app.get('/gif',async (req,res) => {
   try{
     //'https://c.tenor.com/2RdLoyV5VPsAAAAC/ayame-nakiri.gif';
     const gifUrl = req.query.url;
+    const author = req.query.author;
+    const pack = req.query.pack;
+
 
     // Create the "images" folder if it doesn't exist
     try {
@@ -120,7 +125,7 @@ app.get('/gif',async (req,res) => {
 
     // Example usage:
     // await createStickerAndSave(imageUrl, 'Tofu', 'Miko');
-    const fileName = await createStickerAndSave(gifUrl, 'Tofu', 'Miko');
+    const fileName = await createStickerAndSave(gifUrl, pack, author);
     const formattedFileName = path.basename(fileName);
     res.json({file:'/'+formattedFileName})
   }catch(error){
