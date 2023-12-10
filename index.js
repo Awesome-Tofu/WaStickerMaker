@@ -5,6 +5,8 @@ import path from 'path';
 import { spawn } from 'child_process';
 import gif2webp from 'gif2webp-bin';
 import express from 'express';
+///home/runner/WaStickerMaker
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -46,8 +48,8 @@ async function createStickerAndSave(imageUrl, packName, authorName) {
         let sticker;
         if (isGifImage) {
             console.log('Converting GIF to WebP');
-            const gifPath = 'temp.gif';
-            const webpPath = 'temp.webp';
+            const gifPath = '/tmp/temp.gif';
+            const webpPath = '/tmp/temp.webp';
 
             const response = await axios({
               method: 'GET',
@@ -65,16 +67,17 @@ async function createStickerAndSave(imageUrl, packName, authorName) {
             sticker = new Sticker(imageUrl, getOptions(packName, authorName));
         }
 
-        const outputPath = path.resolve(sticker.defaultFilename);
+        const outputPath = path.resolve('/tmp/images',sticker.defaultFilename);
 
         await sticker.toFile(outputPath);
         return outputPath;
     } catch (error) {
         console.error('Error creating or saving sticker:', error.message);
+        return error.message;
     }
 }
 app.get('/',(req,res)=>{
-  res.send('Hello World')
+  res.json({img:"/img?url=https://te.legra.ph/file/30d0cec47423d5370ea0c.png&author=miko&pack=tofu",gif:"/gif?url=https://c.tenor.com/2RdLoyV5VPsAAAAC/ayame-nakiri.gif&author=miko&pack=tofu"})
 })
 
 
@@ -87,7 +90,7 @@ app.get('/img',async (req,res) => {
 
     // Create the "images" folder if it doesn't exist
     try {
-        await fs.mkdir('images');
+        await fs.mkdir('/tmp/images');
     } catch (err) {
         if (err.code !== 'EEXIST') {
             console.error('Error creating "images" folder:', err.message);
@@ -115,7 +118,7 @@ app.get('/gif',async (req,res) => {
 
     // Create the "images" folder if it doesn't exist
     try {
-        await fs.mkdir('images');
+        await fs.mkdir('/tmp/images');
     } catch (err) {
         if (err.code !== 'EEXIST') {
             console.error('Error creating "images" folder:', err.message);
@@ -136,7 +139,7 @@ app.get('/gif',async (req,res) => {
 
 app.get('/:filename', async (req, res) => {
     const requestedFilename = req.params.filename;
-    const filePath = path.resolve(requestedFilename);
+    const filePath = path.resolve('/tmp/images',requestedFilename);
 
     try {
         await fs.access(filePath, fs.constants.F_OK);
