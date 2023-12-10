@@ -98,7 +98,7 @@ app.get('/img',async (req,res) => {
     // Example usage:
     const fileName = await createStickerAndSave(imageUrl, pack, author);
     const formattedFileName = path.basename(fileName);
-    res.json({file:'/'+formattedFileName})
+    res.json({file:'/'+formattedFileName,packName:pack,authorName:author})
   }catch(error){
     res.json({error:error.message});
   }
@@ -127,7 +127,7 @@ app.get('/gif',async (req,res) => {
     // await createStickerAndSave(imageUrl, 'Tofu', 'Miko');
     const fileName = await createStickerAndSave(gifUrl, pack, author);
     const formattedFileName = path.basename(fileName);
-    res.json({file:'/'+formattedFileName})
+    res.json({file:'/'+formattedFileName,packName:pack,authorName:author})
   }catch(error){
     res.json({error:error.message});
   }
